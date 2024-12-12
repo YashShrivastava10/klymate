@@ -20,12 +20,11 @@ export const ThemeProvider = ({
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-schema: dark)")
+      const systemTheme = window.matchMedia("(prefers-color-schema: light)")
         .matches
-        ? "dark"
-        : "light";
+        ? "light"
+        : "dark";
 
-      console.log(systemTheme);
       root.classList.add(systemTheme);
       return;
     }

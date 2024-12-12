@@ -1,5 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Rainbow, Sun } from "lucide-react";
+import Search from "./Search";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -7,16 +8,19 @@ const Header = () => {
   const isDark = theme === "dark";
 
   return (
-    <div className="sticky top-0 z-50 w-full py-2 border-b bg-background/70 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full py-2 border-b bg-background/70 backdrop-blur-sm">
       <div className="container flex items-center justify-between w-full px-4 mx-auto">
-        <div className="flex flex-col gap-1">
-          {/* Image */}
-          <img src="" alt="Klymate" />
-          <label>KLYMATE</label>
+        <div className="flex flex-col">
+          <div className="flex justify-center">
+            <Rainbow
+              className={`${isDark ? "text-yellow-500" : "text-blue-500"}`}
+              size={40}
+            />
+          </div>
+          <label className="tracking-widest text">KLYMATE</label>
         </div>
-        <div className="flex">
-          <div>{/* Search */}</div>
-
+        <div className="flex items-center gap-4">
+          <Search />
           <div
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className={`transition-all cursor-pointer duration-500 ${
@@ -31,7 +35,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
