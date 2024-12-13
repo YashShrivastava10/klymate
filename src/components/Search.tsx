@@ -9,9 +9,13 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/command";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
   const [open, setOpen] = useState(false);
+  const [city, setCity] = useState("");
+
+  const navigate = useNavigate();
 
   // Keyboard shortcut for search using ctrl k
   useEffect(() => {
@@ -27,6 +31,10 @@ const Search = () => {
     return () => document.removeEventListener("keydown", handleQuickSearch);
   }, []);
 
+  const handleSelectCity = (value: string) => {
+    setOpen(false);
+    navigate(`/city/${value}`);
+  };
   return (
     <>
       <Button
@@ -42,13 +50,17 @@ const Search = () => {
         <label className="hidden md:block">Ctrl k</label>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search Cities..." />
+        <CommandInput
+          placeholder="Search Cities..."
+          value={city}
+          onValueChange={(search) => setCity(search)}
+        />
         <CommandList>
           <CommandEmpty>No city found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            <CommandItem>Hyderabad</CommandItem>
-            <CommandItem>Pune</CommandItem>
-            <CommandItem>Delhi</CommandItem>
+            <CommandItem onSelect={handleSelectCity}>Hyderabad</CommandItem>
+            <CommandItem onSelect={handleSelectCity}>Pune</CommandItem>
+            <CommandItem onSelect={handleSelectCity}>Delhi</CommandItem>
           </CommandGroup>
         </CommandList>
       </CommandDialog>
