@@ -4,10 +4,21 @@ import Forecast from "@/components/Forecast/Forecast";
 import TodayTemp from "@/components/TodayTemp";
 import { Button } from "@/components/ui/button";
 import WeatherDetails from "@/components/WeatherDetails/WeatherDetails";
+import useCurrentLocation from "@/hooks/useCurrentLocation";
 import { RefreshCcw } from "lucide-react";
 
 const WeatherDashboard = () => {
+  const {
+    coordinates,
+    isFetching: isLocationFetching,
+    error: locationError,
+  } = useCurrentLocation();
   const isLoading = false;
+
+  console.log(coordinates, isLocationFetching, locationError);
+
+  if (isLocationFetching) return <div>Loading....</div>;
+  if (locationError) return <div>{locationError} </div>;
 
   return (
     <div className="flex flex-col gap-6">
