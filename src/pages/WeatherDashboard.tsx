@@ -18,7 +18,6 @@ const WeatherDashboard = () => {
   console.log(coordinates, isLocationFetching, locationError);
 
   if (isLocationFetching) return <div>Loading....</div>;
-  if (locationError) return <div>{locationError} </div>;
 
   return (
     <div className="flex flex-col gap-6">
@@ -28,7 +27,7 @@ const WeatherDashboard = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <h3 className="text-xl font-bold tracking-wider">My Location</h3>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" disabled={!!locationError}>
             <RefreshCcw
               className={`${
                 isLoading
@@ -39,12 +38,12 @@ const WeatherDashboard = () => {
           </Button>
         </div>
         <div className="grid gap-4 lg:grid-cols-[2fr_3fr]">
-          <CityWeather />
-          <TodayTemp />
+          <CityWeather error={locationError} />
+          <TodayTemp error={locationError} />
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <WeatherDetails />
-          <Forecast />
+          <WeatherDetails error={locationError} />
+          <Forecast error={locationError} />
         </div>
       </div>
     </div>

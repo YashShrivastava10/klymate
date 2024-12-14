@@ -59,6 +59,11 @@ const Favourites = () => {
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
+  const handleX = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    console.log("x clicked");
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-xl font-bold tracking-wider">Favourites</h3>
@@ -91,6 +96,7 @@ const Favourites = () => {
                 variant="ghost"
                 className="absolute w-6 h-6 p-0 rounded-full right-1 top-1"
                 disabled={isLoading}
+                onClick={handleX}
               >
                 <X />
               </Button>
