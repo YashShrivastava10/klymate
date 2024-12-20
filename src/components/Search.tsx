@@ -10,12 +10,15 @@ import {
   CommandList,
 } from "./ui/command";
 import { useNavigate } from "react-router-dom";
+import useLocationCoordinate from "@/hooks/useLocationCoordinate";
 
 const Search = () => {
   const [open, setOpen] = useState(false);
   const [city, setCity] = useState("");
 
   const navigate = useNavigate();
+
+  const { data: citySuggestions, isLoading } = useLocationCoordinate(city);
 
   // Keyboard shortcut for search using ctrl k
   useEffect(() => {
@@ -33,8 +36,10 @@ const Search = () => {
 
   const handleSelectCity = (value: string) => {
     setOpen(false);
-    navigate(`/city/${value}`);
+    const [name, lat, lon] = value.split("-");
+    navigate(`/city/${name}?lat=${lat}&lon=${lon}`);
   };
+
   return (
     <>
       <Button
@@ -56,12 +61,26 @@ const Search = () => {
           onValueChange={(search) => setCity(search)}
         />
         <CommandList>
-          <CommandEmpty>No city found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            <CommandItem onSelect={handleSelectCity}>Hyderabad</CommandItem>
-            <CommandItem onSelect={handleSelectCity}>Pune</CommandItem>
-            <CommandItem onSelect={handleSelectCity}>Delhi</CommandItem>
-          </CommandGroup>
+          {/* No city found message */}
+          {city.length < 3 && !isLoading && (
+            <CommandEmpty>No city found.</CommandEmpty>
+          )}
+
+          {/* Suggestion */}
+          {citySuggestions && citySuggestions.length > 0 && (
+            <CommandGroup heading="Suggestions">
+              {isLoading && <div>Loading...</div>}
+              {citySuggestions?.map((city) => (
+                <CommandItem
+                  key={`${city.lat}-${city.lon}`}
+                  value={`${city.name}-${city.lat}-${city.lon}`}
+                  onSelect={handleSelectCity}
+                >
+                  {city.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
     </>

@@ -3,17 +3,26 @@ import Forecast from "@/components/Forecast/Forecast";
 import TodayTemp from "@/components/TodayTemp";
 import { Card } from "@/components/ui/card";
 import WeatherDetails from "@/components/WeatherDetails/WeatherDetails";
-import { useParams } from "react-router-dom";
+import useWeather from "@/hooks/useWeather";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const CityPage = () => {
   const params = useParams();
+  const [search] = useSearchParams();
 
-  const { cityName } = params;
+  const lat = parseFloat(search.get("lat") || "0");
+  const lon = parseFloat(search.get("lon") || "0");
+
+  const coordinates = { lat, lon };
+
+  const { data } = useWeather(coordinates);
+
+  console.log(data);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
-        <h3 className="text-2xl font-bold tracking-wider">{cityName}</h3>
+        <h3 className="text-2xl font-bold tracking-wider">{params.cityName}</h3>
       </div>
       <div className="grid gap-4">
         {[CityWeather, TodayTemp].map((Component, index) => (
